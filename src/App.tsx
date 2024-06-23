@@ -2,15 +2,15 @@ import { useState } from 'react'
 import './App.css'
 import { IUser, logginWithGoogle, logout } from './firebase/auth'
 
-
-
 function App() {
 
   const [user, setUser] = useState<IUser | null>(null)
 
   const loggin = () => {
     logginWithGoogle()
-      .then((response) => setUser(response))
+      .then((response) => {
+        setUser(response)
+      })
   }
 
   const closeSession = () => {
@@ -21,29 +21,37 @@ function App() {
   }
 
   return (
-    <div >
-      <button
-        onClick={loggin}
-      >
-        Login con Google
-      </button>
+    <>
+      <div className='vertical-container'>
+        <button
+          onClick={loggin}
+        >
+          Login con Google
+        </button>
 
-      <button
-        onClick={closeSession}
-      >
-        Cerrar sesión
-      </button>
-
-      <span>{user?.name}</span>
-      <span> {user?.email}</span>
-
+        <button
+          onClick={closeSession}
+        >
+          Cerrar sesión
+        </button>
+      </div >
       {
         user !== null && (
-          <img src={user?.photo_url ?? ""} alt='Foto de perfil'></img>
+          <>
+            <div className='horizontal-container'>
+              <span>{`Nombre de usuario: `}</span>
+              {user?.name}
+              <span>Email:</span>
+              {user?.email}
+            </div>
+            <div className='horizontal-container'>
+              <span>Foto de Perfil</span>
+              <img src={user?.photo_url ?? ""} alt='Foto de perfil'></img>
+            </div>
+          </>
         )
       }
-
-    </div >
+    </>
   )
 }
 
